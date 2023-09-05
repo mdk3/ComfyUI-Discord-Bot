@@ -76,14 +76,7 @@ Here's a blank template to get started: To avoid retyping too much info. Do a se
 
 ### Built With
 
-* [![Next][Next.js]][Next-url]
-* [![React][React.js]][React-url]
-* [![Vue][Vue.js]][Vue-url]
-* [![Angular][Angular.io]][Angular-url]
-* [![Svelte][Svelte.dev]][Svelte-url]
-* [![Laravel][Laravel.com]][Laravel-url]
-* [![Bootstrap][Bootstrap.com]][Bootstrap-url]
-* [![JQuery][JQuery.com]][JQuery-url]
+* [![Node][Node.js]][Node-js]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -114,9 +107,10 @@ This is an example of how to list things you need to use the software and how to
    ```sh
    npm install
    ```
-4. Enter your API in `config.js`
+4. Enter your congig in `.env`
    ```js
-   const API_KEY = 'ENTER YOUR API';
+   token=TOKEN;
+   comfyuipath=D:/;
    ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -213,6 +207,8 @@ Project Link: [https://github.com/github_username/repo_name](https://github.com/
 [linkedin-url]: https://linkedin.com/in/linkedin_username
 [product-screenshot]: images/screenshot.png
 [Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
+[Node.js]: https://nodejs.org/static/images/logo.svg
+[Node-js]: https://nodejs.org/
 [Next-url]: https://nextjs.org/
 [React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
 [React-url]: https://reactjs.org/

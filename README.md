@@ -174,6 +174,8 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 <!-- CONTACT -->
 ## Contact
 
+Discord Server Link: [TKMM Discord Server](https://discord.gg/GxEEcfn5q7)
+
 Project Link: [https://github.com/mdk3/ComfyUI-Discord-Bot](https://github.com/mdk3/ComfyUI-Discord-Bot)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>

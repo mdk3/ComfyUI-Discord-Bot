@@ -1,0 +1,22 @@
+{
+  "name": "comfyui-discord-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/bot.js",
+  "scripts": {
+    "test": "node . --trace-warnings"
+  },
+  "keywords": [],
+  "author": "mdk3",
+  "license": "MIT",
+  "dependencies": {
+    "@discordjs/rest": "^2.0.0",
+    "canvas": "^2.11.2",
+    "chalk": "^4.1.2",
+    "comfy-ui-client": "^0.1.1",
+    "discord-api-types": "^0.37.53",
+    "discord.js": "^14.12.1",
+    "dotenv": "^16.3.1",
+    "uuid": "^9.0.0"
+  }
+}

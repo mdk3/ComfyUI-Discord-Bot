@@ -1,5 +1,5 @@
-const { REST} = require('@discordjs/rest');
-const {Routes}= require('discord-api-types/v9');
+const { REST } = require('@discordjs/rest');
+const { Routes } = require('discord-api-types/v9');
 const fs = require('fs');
 
 module.exports = (client) => {
@@ -19,16 +19,15 @@ module.exports = (client) => {
             }
         }
 
-        
-        const clientId = '1139159098445791272'; // TKMM AI Art Bot Client ID
-        // const clientId = '1147459847688822885'; // MDK AI Art Client ID
-        const rest = new REST({version:'9'}).setToken(process.env.token);
-        
+        const { clientId } = process.env;
+
+        const rest = new REST({ version: '9' }).setToken(process.env.token);
+
         try {
             console.log('komut yenileme (/)');
             await rest.put(
                 Routes.applicationCommands(clientId),
-                {body: client.commandArray},
+                { body: client.commandArray },
             );
             console.log('basariyla yenilendi (/)');
         } catch (error) {

@@ -6,7 +6,6 @@
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
 
 
 
@@ -98,10 +97,11 @@ This is an example of how to list things you need to use the software and how to
 
 ### Installation
 
-1. Get a free TOKEN Key at [https://example.com](https://example.com)
+1. Get a Bot TOKEN at [https://discord.com/developers/applications](https://discord.com/developers/applications)
 2. Clone the repo
    ```sh
    git clone https://github.com/mdk3/ComfyUI-Discord-Bot.git
+   cd ComfyUI-Discord-Bot
    ```
 3. Install NPM packages
    ```sh
@@ -112,6 +112,11 @@ This is an example of how to list things you need to use the software and how to
    token=TOKEN
    comfyuipath=D:/
    ```
+5. Run Bot `run.bat` or
+   ```sh
+   npm run test
+   ```
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -135,6 +140,8 @@ Updating...
 - [x] FacePassword Command
 - [x] FaceList Command
 - [x] Modal Interaction
+- [ ] Multi Language Support
+- [ ] Set Users Limit
 
 See the [open issues](https://github.com/mdk3/ComfyUI-Discord-Bot/issues) for a full list of proposed features (and known issues).
 

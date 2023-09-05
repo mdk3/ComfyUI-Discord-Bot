@@ -4,7 +4,7 @@ const { createCanvas, loadImage } = require('canvas');
 // Your prompt / workflow
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('faceswap')
+        .setName('facechanger')
         .setDescription('kendi yüklediğiniz yüz fotoğrafını kullanarak resimler oluşturun!')
         .addStringOption(option => option.setName('positive').setDescription('Pozitif'))
         .addStringOption(option => option.setName('negative').setDescription('Negatif'))

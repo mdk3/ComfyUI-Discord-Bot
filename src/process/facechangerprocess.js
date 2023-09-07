@@ -1,47 +1,30 @@
-//const { ComfyUIClient, Prompt } = require('comfy-ui-client');
 const {ComfyUIClient, Prompt} = require('../../extended_node_modules/comfy-ui-client')
 const { SlashCommandBuilder, MessageAttachment, AttachmentBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { v4: uuidv4 } = require('uuid');
 const { globalDataAdd, GLOBALQUEUE } = require('../process/globalProcessInfo');
 let isProcessing = false;
-const { comfyuipath } = process.env;
+let ProcessList = [];
 
-function addProcessToList(prompt, interaction, type) {
-    GLOBALQUEUE.push({ prompt, interaction, type });
+function addProcessToList(prompt, interaction, type, buffer) {
+    ProcessList.push({ prompt, interaction, type, buffer });
     ProcessQueue();
-    return GLOBALQUEUE.length;
+    return ProcessList.length;
 }
 
 function getPromise() {
     return new Promise((resolve, reject) => {
         isProcessing = true;
+
         const button = new ActionRowBuilder()
             .addComponents(
                 new ButtonBuilder()
-                    .setCustomId('button1')
-                    .setLabel('🎲')
-                    .setStyle(ButtonStyle.Success),
-
-                new ButtonBuilder()
-                    .setCustomId('button2')
-                    .setLabel('⬆️')
-                    .setStyle(ButtonStyle.Success),
-
-                new ButtonBuilder()
-                    .setCustomId('button3')
-                    .setLabel('✒️')
-                    .setStyle(ButtonStyle.Success),
-
-                new ButtonBuilder()
                     .setCustomId('button4')
                     .setLabel('🗑️')
-                    .setStyle(ButtonStyle.Danger),
-
-
+                    .setStyle(ButtonStyle.Danger)
             )
 
-        const proc = GLOBALQUEUE[0];
-        if (proc.type === 'faceswap') {
+        const proc = ProcessList[0];
+        if (proc.type === 'facechanger') {
             const { loadData, saveData } = require('../process/jsonDataReaderWriter');
             const dataJSON = loadData();
             const faceidm = proc.prompt['13'].inputs.image.toString().split('/')[1];
@@ -75,46 +58,12 @@ function getPromise() {
             }
         }
 
-
-        if (proc.type === 'sdxl') {
-            if (proc.prompt['8'].inputs.steps > 45) {
-                proc.prompt['8'].inputs.steps = 20;
-            }
-
-            if (proc.prompt['36'].inputs.value > 2048) {
-                proc.prompt['36'].inputs.value = 1024;
-            }
-
-            if (proc.prompt['37'].inputs.value > 2048) {
-                proc.prompt['37'].inputs.value = 1024;
-            }
-        }
-        else {
-            if (proc.prompt['8'].inputs.steps > 60) {
-                proc.prompt['8'].inputs.steps = 30;
-            }
-
-            if (proc.prompt['9'].inputs.width > 1024) {
-                proc.prompt['9'].inputs.width = 512;
-            }
-
-            if (proc.prompt['9'].inputs.height > 1024) {
-                proc.prompt['9'].inputs.height = 512;
-            }
-        }
-
-
         const serverAddress = '127.0.0.1:8188';
         const clientId = uuidv4();
         const client_comfy = new ComfyUIClient(serverAddress, clientId);
 
         client_comfy.eventTetikleyici.on('progress', async (data) => {
-            if (proc.type === 'sdxl') {
-                SendProgressRealTime(proc.interaction, `\`Seed: ${proc.prompt['8'].inputs.seed}\nSteps: ${proc.prompt['8'].inputs.steps}\nWidth: ${proc.prompt['36'].inputs.value}\nHeight: ${proc.prompt['37'].inputs.value}\`\n`, data);
-            }
-            else {
-                SendProgressRealTime(proc.interaction, `\`Seed: ${proc.prompt['8'].inputs.seed}\nSteps: ${proc.prompt['8'].inputs.steps}\nWidth: ${proc.prompt['9'].inputs.width}\nHeight: ${proc.prompt['9'].inputs.height}\`\n`, data);
-            }
+            SendProgressRealTime(proc.interaction, `\`Fotoğraf İşleniyor\`\n`, data);
         })
 
         client_comfy.eventTetikleyici.on('progressEnd', async (data) => {
@@ -122,16 +71,18 @@ function getPromise() {
         })
 
 
-        client_comfy.connect()
-            .then(() => client_comfy.getImages(proc.prompt))
+        client_comfy.connect().then(() => client_comfy.uploadImage(proc.buffer, 'TKMMFaceChangeData/test'))
+            .then((mdktester) => {
+                proc.prompt['34'].inputs.image = mdktester.name;
+            }).then(()=>client_comfy.getImages(proc.prompt))
             .then(images => {
                 return client_comfy.disconnect().then(() => images);
             })
             .then(images => {
-                const path = `${comfyuipath}ComfyUI/${images['33'][0].image.type}/${images['33'][0].image.filename}`;
-                const path_upscaled = `${comfyuipath}ComfyUI/${images['32'][0].image.type}/${images['32'][0].image.filename}`;
+                const path = `D:/ComfyUI/ComfyUI/${images['33'][0].image.type}/${images['33'][0].image.filename}`;
+                const path_upscaled = `D:/ComfyUI/ComfyUI/${images['32'][0].image.type}/${images['32'][0].image.filename}`;
                 const interactionResponse = {
-                    content: `İşlem Tamamlandı! ${proc.interaction.user}\nseed: **${proc.prompt['8'].inputs.seed}**`, files: [path], components: [button]
+                    content: `İşlem Tamamlandı! ${proc.interaction.user}`, files: [path], components: [button]
                 };
 
                 const result = {
@@ -167,17 +118,16 @@ async function SendProgressRealTime(inter, mesajHeader, data) {
 
 async function ProcessQueue() {
 
-    if (isProcessing || GLOBALQUEUE.length === 0) return;
+    if (isProcessing || ProcessList.length === 0) return;
     const respp = await getPromise();
 
     const channelId = respp.procc.interaction.channelId;
     const channel = await respp.procc.interaction.guild.channels.fetch(channelId);
 
     const message = await channel.send(respp.solve1);
-    await respp.procc.interaction.editReply('Gönderildi!\nTamamlanma Durumu: **Tamamlandı!**')
+    await respp.procc.interaction.editReply('Gönderildi!\nTamamlanma Durumu: **Tamamlandı!**');
     globalDataAdd(respp.procc.prompt, message.id, respp.procc.interaction.user.id, respp.solve2, respp.procc.type);
-    GLOBALQUEUE.shift();
-
+    ProcessList.shift();
     isProcessing = false;
     ProcessQueue();
 }
